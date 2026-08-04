@@ -1,0 +1,93 @@
+
+> project-control-center@0.1.0 lint
+> eslint
+
+
+/Users/egor/Desktop/1 тз/project-control-center/scripts/generate-tree.js
+  1:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:14  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/Users/egor/Desktop/1 тз/project-control-center/src/entities/task/ui/task-card.tsx
+  88:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/egor/Desktop/1 тз/project-control-center/src/features/kanban/ui/task-modal.tsx
+   5:10  warning  'motion' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  39:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/egor/Desktop/1 тз/project-control-center/src/features/kanban/ui/task-modal.tsx:39:7
+  37 |   useEffect(() => {
+  38 |     if (selectedTask) {
+> 39 |       setFormData({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  40 |         title: selectedTask.title,
+  41 |         description: selectedTask.description,
+  42 |         status: selectedTask.status,  react-hooks/set-state-in-effect
+
+/Users/egor/Desktop/1 тз/project-control-center/src/features/search/ui/search-bar.tsx
+  7:10  warning  'debouncedQuery' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/egor/Desktop/1 тз/project-control-center/src/features/theme-toggle/ui/theme-toggle.tsx
+  12:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/Users/egor/Desktop/1 тз/project-control-center/src/features/theme-toggle/ui/theme-toggle.tsx:12:5
+  10 |
+  11 |   useEffect(() => {
+> 12 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |     const root = document.documentElement;
+  14 |     if (theme === 'dark') {
+  15 |       root.classList.add('dark');  react-hooks/set-state-in-effect
+
+/Users/egor/Desktop/1 тз/project-control-center/src/shared/api/mock-api.ts
+  15:5  error  'projects' is never reassigned. Use 'const' instead       prefer-const
+  17:5  error  'notifications' is never reassigned. Use 'const' instead  prefer-const
+
+/Users/egor/Desktop/1 тз/project-control-center/src/shared/api/mock-data.ts
+  2:10  warning  'generateId' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/egor/Desktop/1 тз/project-control-center/src/shared/lib/utils.ts
+  88:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  88:56  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/egor/Desktop/1 тз/project-control-center/src/shared/ui/avatar.tsx
+  25:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/egor/Desktop/1 тз/project-control-center/src/widgets/activity-chart/ui/activity-chart.tsx
+   3:10  warning  'useState' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   5:3   warning  'LineChart' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   6:3   warning  'Line' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  17:15  warning  'ActivityData' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  88:44  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Users/egor/Desktop/1 тз/project-control-center/src/widgets/activity-chart/ui/activity-chart.tsx:88:44
+  86 |                   key={i}
+  87 |                   className="flex-1 bg-gray-100 dark:bg-[#334155]/50 rounded-t"
+> 88 |                   style={{ height: `${30 + Math.random() * 60}%` }}
+     |                                            ^^^^^^^^^^^^^ Cannot call impure function
+  89 |                 />
+  90 |               ))}
+  91 |             </div>  react-hooks/purity
+
+/Users/egor/Desktop/1 тз/project-control-center/src/widgets/header/ui/header.tsx
+  23:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/Users/egor/Desktop/1 тз/project-control-center/src/widgets/kanban-board/ui/kanban-board.tsx
+  42:39  warning  '_event' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 20 problems (9 errors, 11 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+

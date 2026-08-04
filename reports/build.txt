@@ -1,0 +1,13 @@
+
+> project-control-center@0.1.0 build
+> next build
+
+▲ Next.js 16.3.0 (Turbopack)
+✓ Running next.config.ts took 11ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 568ms
+  Running TypeScript ...
+vitest.config.ts(2,19): error TS2307: Cannot find module '@vitejs/plugin-react' or its corresponding type declarations.
+Failed to type check.
+
