@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+
 import {
-  LineChart,
-  Line,
+
+
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,7 +14,7 @@ import {
 } from 'recharts';
 import { useActivityDataQuery } from '@/entities/analytics/model/queries';
 import { useAnalyticsStore } from '@/entities/analytics/model/store';
-import type { ActivityData } from '@/shared/types';
+
 
 type Period = 7 | 30 | 90;
 
@@ -46,8 +46,11 @@ function ChartTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 export function ActivityChart() {
-  const { activityPeriod, setActivityPeriod } = useAnalyticsStore();
+  const activityPeriod = useAnalyticsStore(state => state.activityPeriod);
+  const setActivityPeriod = useAnalyticsStore(state => state.setActivityPeriod);
   const { data, isLoading } = useActivityDataQuery(activityPeriod);
+
+  const skeletonHeights = [45, 60, 35, 70, 50, 80, 40, 65, 55, 75, 45, 60];
 
   return (
     <div className="w-full bg-white dark:bg-[#1e293b] rounded-2xl p-6 border border-gray-200 dark:border-[#334155]">
@@ -67,7 +70,7 @@ export function ActivityChart() {
               onClick={() => setActivityPeriod(opt.value)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 activityPeriod === opt.value
-                  ? 'bg-white dark:bg-[#1e293b] text-[#3b82f6] shadow-sm'
+                  ? 'bg-white dark:bg-[#1e293b] text-[#3b82f6] dark:text-[#60a5fa] shadow-sm'
                   : 'text-gray-500 dark:text-gray-400 hover:text-[#0f172a] dark:hover:text-[#f8fafc]'
               }`}
             >
@@ -81,11 +84,11 @@ export function ActivityChart() {
         {isLoading ? (
           <div className="w-full h-full flex flex-col justify-end gap-4 animate-pulse">
             <div className="flex gap-2 h-full items-end">
-              {Array.from({ length: 12 }).map((_, i) => (
+              {skeletonHeights.map((height, i) => (
                 <div
                   key={i}
                   className="flex-1 bg-gray-100 dark:bg-[#334155]/50 rounded-t"
-                  style={{ height: `${30 + Math.random() * 60}%` }}
+                  style={{ height: `${height}%` }}
                 />
               ))}
             </div>

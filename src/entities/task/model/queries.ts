@@ -1,19 +1,16 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { tasksApi } from '@/shared/api'
-import { useTaskStore } from './store'
+import { tasksApi } from '../api/task-api'
 import toast from 'react-hot-toast'
 import { Task } from '@/shared/types'
+import { moveTaskPure } from '../lib/task-utils'
 
 export function useTasksQuery() {
-  const setTasks = useTaskStore(state => state.setTasks)
-  
   return useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
       const data = await tasksApi.getAll()
-      setTasks(data)
       return data
     }
   })
@@ -66,20 +63,23 @@ export function useDeleteTaskMutation() {
 
 export function useMoveTaskMutation() {
   const queryClient = useQueryClient()
-  const moveTask = useTaskStore(state => state.moveTask)
-  const rollbackTasks = useTaskStore(state => state.rollbackTasks)
   
   return useMutation({
     mutationFn: ({ taskId, newStatus, newOrder }: { taskId: string; newStatus: Task['status']; newOrder: number }) => 
       tasksApi.reorder(taskId, newStatus, newOrder),
     onMutate: async ({ taskId, newStatus, newOrder }) => {
       await queryClient.cancelQueries({ queryKey: ['tasks'] })
-      const previousTasks = moveTask(taskId, newStatus, newOrder)
+      const previousTasks = queryClient.getQueryData<Task[]>(['tasks'])
+      
+      if (previousTasks) {
+        const newTasks = moveTaskPure(previousTasks, taskId, newStatus, newOrder)
+        queryClient.setQueryData<Task[]>(['tasks'], newTasks)
+      }
       return { previousTasks }
     },
     onError: (err, variables, context) => {
       if (context?.previousTasks) {
-        rollbackTasks(context.previousTasks)
+        queryClient.setQueryData<Task[]>(['tasks'], context.previousTasks)
       }
       toast.error('Failed to move task')
     },

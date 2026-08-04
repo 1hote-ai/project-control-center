@@ -1,9 +1,11 @@
 'use client'
 
+import React, { useCallback } from 'react'
 import { motion } from 'framer-motion'
 import type { Task } from '@/shared/types'
 import { useTaskStore } from '../model/store'
 import { MessageSquare, Calendar } from 'lucide-react'
+import Image from 'next/image'
 
 interface TaskCardProps {
   task: Task
@@ -21,15 +23,15 @@ function formatShortDate(dateStr: string): string {
   return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(new Date(dateStr))
 }
 
-export function TaskCard({ task, isDragging }: TaskCardProps) {
+export const TaskCard = React.memo(function TaskCard({ task, isDragging }: TaskCardProps) {
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask)
   const openModal = useTaskStore((state) => state.openModal)
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedTask(task)
     openModal()
-  }
+  }, [task, setSelectedTask, openModal])
 
   const isOverdue = new Date(task.deadline) < new Date() && task.status !== 'done'
 
@@ -85,8 +87,8 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
               title={assignee.name}
             >
               {assignee.avatar ? (
-                <img src={assignee.avatar} alt={assignee.name} className="h-full w-full rounded-full object-cover" />
-              ) : (
+              <Image src={assignee.avatar} alt={assignee.name} width={24} height={24} className="h-full w-full rounded-full object-cover" />
+            ) : (
                 <div className="h-full w-full flex items-center justify-center text-[10px] text-white font-medium">
                   {assignee.name.charAt(0).toUpperCase()}
                 </div>
@@ -102,4 +104,4 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
       </div>
     </motion.div>
   )
-}
+})

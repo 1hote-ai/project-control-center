@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { notificationsApi } from '@/shared/api'
+import { notificationsApi } from "../api/notification-api";
 import { useUserStore } from './store'
 
 export function useNotificationsQuery() {

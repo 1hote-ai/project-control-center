@@ -20,7 +20,7 @@ export const StatCards = () => {
               <p className="text-sm text-gray-500 dark:text-gray-400">{card.title}</p>
               <p className={`text-3xl font-bold mt-1 ${card.title === 'Overdue Tasks' ? 'text-[#ef4444]' : card.title === 'Completed' ? 'text-[#22c55e]' : 'text-[#0f172a] dark:text-[#f8fafc]'}`}>{card.value}</p>
             </div>
-            <div className="p-2 rounded-lg bg-[#f8fafc] dark:bg-[#0f172a]/50 text-[#3b82f6]">
+            <div className="p-2 rounded-lg bg-[#f8fafc] dark:bg-[#0f172a]/50 text-[#3b82f6] dark:text-[#60a5fa]">
               <card.icon size={24} />
             </div>
           </div>

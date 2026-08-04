@@ -26,12 +26,16 @@ export const NotificationBell = () => {
   const getIcon = (type: string) => {
     if (type === 'alert') return <AlertTriangle className="text-[#ef4444] w-4 h-4" />;
     if (type === 'success') return <CheckCircle2 className="text-[#22c55e] w-4 h-4" />;
-    return <Info className="text-[#3b82f6] w-4 h-4" />;
+    return <Info className="text-[#3b82f6] dark:text-[#60a5fa] w-4 h-4" />;
   };
 
   return (
     <div className="relative" ref={ref}>
-      <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-lg bg-[#f8fafc] dark:bg-[#1e293b] border border-[#e2e8f0] dark:border-[#334155] text-[#0f172a] dark:text-[#f8fafc]">
+      <button 
+        onClick={() => setIsOpen(!isOpen)} 
+        className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-[#f8fafc] dark:bg-[#1e293b] border border-[#e2e8f0] dark:border-[#334155] text-[#0f172a] dark:text-[#f8fafc]"
+        aria-label="Toggle notifications"
+      >
         <Bell size={20} />
         {unreadCount > 0 && <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#ef4444] rounded-full border-2 border-white dark:border-[#1e293b]" />}
       </button>

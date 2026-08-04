@@ -1,7 +1,9 @@
 import { ImgHTMLAttributes } from 'react';
 import { cn, getInitials } from '../lib/utils';
+import Image from 'next/image';
 
-export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
+export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height' | 'src'> {
+  src?: string;
   size?: 'sm' | 'md' | 'lg';
   fallback?: string;
 }
@@ -22,10 +24,12 @@ export function Avatar({ src, alt, size = 'md', fallback, className, ...props }:
       )}
     >
       {src ? (
-        <img
-          src={src}
-          alt={alt || 'Avatar'}
-          className="h-full w-full object-cover"
+        <Image 
+          src={src} 
+          alt={alt || "Avatar"} 
+          width={40} 
+          height={40} 
+          className="h-full w-full object-cover" 
           {...props}
         />
       ) : (

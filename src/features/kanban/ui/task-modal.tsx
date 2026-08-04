@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
-import { motion } from 'framer-motion';
+
 import { Modal } from '@/shared/ui';
 import { useTaskStore } from '@/entities/task/model/store';
 import { useUpdateTaskMutation, useDeleteTaskMutation } from '@/entities/task/model/queries';
@@ -19,7 +19,9 @@ const taskSchema = z.object({
 type ValidationErrors = Partial<Record<string, string>>;
 
 export function TaskModal() {
-  const { isModalOpen, selectedTask, closeModal } = useTaskStore();
+  const isModalOpen = useTaskStore(state => state.isModalOpen);
+  const selectedTask = useTaskStore(state => state.selectedTask);
+  const closeModal = useTaskStore(state => state.closeModal);
   const { mutate: updateTask, isPending: isUpdating } = useUpdateTaskMutation();
   const { mutate: deleteTask, isPending: isDeleting } = useDeleteTaskMutation();
 
@@ -34,7 +36,10 @@ export function TaskModal() {
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
+  const [prevSelectedTask, setPrevSelectedTask] = useState<Task | null>(null);
+
+  if (selectedTask !== prevSelectedTask) {
+    setPrevSelectedTask(selectedTask);
     if (selectedTask) {
       setFormData({
         title: selectedTask.title,
@@ -47,7 +52,7 @@ export function TaskModal() {
       setUploadedFiles([]);
       setNewComment('');
     }
-  }, [selectedTask]);
+  }
 
   if (!isModalOpen || !selectedTask) return null;
 
@@ -207,6 +212,7 @@ export function TaskModal() {
               onClick={() => setShowDeleteConfirm(true)}
               className="p-2.5 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-colors"
               title="Delete task"
+              aria-label="Delete task"
             >
               <Trash2 size={18} />
             </button>

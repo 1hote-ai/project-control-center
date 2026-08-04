@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -9,20 +9,28 @@ import {
   useSensors,
   closestCorners,
 } from '@dnd-kit/core';
-import type { DragStartEvent, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
+import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { KanbanColumn } from './kanban-column';
 import { TaskCard } from '@/entities/task';
-import { useTaskStore } from '@/entities/task/model/store';
+
 import { useMoveTaskMutation, useTasksQuery } from '@/entities/task/model/queries';
 import type { Task } from '@/shared/types';
 
+import { COLUMNS } from '@/shared/config';
+
 export function KanbanBoard() {
-  const { tasks, getColumns } = useTaskStore();
-  const { isLoading } = useTasksQuery();
+  const { data: tasks = [], isLoading } = useTasksQuery();
   const { mutate: moveTask } = useMoveTaskMutation();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
-  const columns = getColumns();
+  const columns = useMemo(() => {
+    return COLUMNS.map((col) => ({
+      ...col,
+      tasks: tasks
+        .filter((t) => t.status === col.status)
+        .sort((a, b) => a.order - b.order),
+    }));
+  }, [tasks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -39,7 +47,7 @@ export function KanbanBoard() {
     [tasks]
   );
 
-  const handleDragOver = useCallback((_event: DragOverEvent) => {
+  const handleDragOver = useCallback(() => {
     // Visual feedback during drag is handled by DnD Kit
   }, []);
 

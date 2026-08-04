@@ -1,5 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const reportsDir = path.join(__dirname, '..', 'reports');
 const rootDir = path.join(__dirname, '..');
@@ -7,7 +11,7 @@ const rootDir = path.join(__dirname, '..');
 function safeRead(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8');
-  } catch (e) {
+  } catch {
     return 'Not found';
   }
 }
@@ -22,7 +26,7 @@ function parseLighthouse(jsonPath) {
 - Best Practices: ${Math.round(categories['best-practices'].score * 100)}
 - SEO: ${Math.round(categories.seo.score * 100)}
 `;
-  } catch (e) {
+  } catch {
     return 'Lighthouse report not available or still generating.';
   }
 }

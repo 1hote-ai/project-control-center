@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
+
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQuery(query), 300);
+    // Mocking debounced search
+    const timer = setTimeout(() => {
+      // Do search here with query
+    }, 300);
     return () => clearTimeout(timer);
   }, [query]);
 

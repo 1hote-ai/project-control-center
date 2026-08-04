@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { analyticsApi } from '@/shared/api'
+import { analyticsApi } from "../api/analytics-api";
 
 export function useActivityDataQuery(days: number) {
   return useQuery({

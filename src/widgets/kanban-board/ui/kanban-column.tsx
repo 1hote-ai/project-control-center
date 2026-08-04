@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableTaskCard } from './sortable-task-card';
@@ -10,7 +11,7 @@ interface KanbanColumnProps {
   column: Column;
 }
 
-export function KanbanColumn({ column }: KanbanColumnProps) {
+export const KanbanColumn = React.memo(function KanbanColumn({ column }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
 
   return (
@@ -32,10 +33,10 @@ export function KanbanColumn({ column }: KanbanColumnProps) {
             <SortableTaskCard key={task.id} task={task} />
           ))}
         </SortableContext>
-        <button className="mt-auto w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed border-[#334155] text-gray-400 hover:border-[#3b82f6] hover:text-[#3b82f6] transition-colors">
+        <button className="mt-auto w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed border-[#334155] text-gray-400 hover:border-[#3b82f6] hover:text-[#3b82f6] dark:hover:text-[#60a5fa] transition-colors">
           <Plus size={16} /> Add Task
         </button>
       </div>
     </div>
   );
-}
+});

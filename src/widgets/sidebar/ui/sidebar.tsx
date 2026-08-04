@@ -20,7 +20,11 @@ export const Sidebar = () => {
     <motion.aside initial={false} animate={{ width: isCollapsed ? 64 : 240 }} className="hidden lg:flex flex-col h-screen sticky top-0 bg-white dark:bg-[#1e293b] border-r border-gray-200 dark:border-[#334155] overflow-hidden">
       <div className="p-4 flex justify-between items-center h-16 border-b border-gray-200 dark:border-[#334155]">
         {!isCollapsed && <span className="font-semibold text-[#0f172a] dark:text-[#f8fafc]">Navigation</span>}
-        <button onClick={() => setIsCollapsed(!isCollapsed)} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-[#334155]/50 text-gray-500">
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)} 
+          className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-[#334155]/50 text-gray-500"
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
           <Menu size={20} />
         </button>
       </div>
@@ -29,7 +33,7 @@ export const Sidebar = () => {
           const isActive = pathname === item.href;
           return (
             <Link key={item.href} href={item.href}>
-              <div className={`flex items-center gap-3 rounded-lg py-3 px-4 transition-colors ${isActive ? 'bg-[#3b82f6]/10 text-[#3b82f6] border-l-2 border-[#3b82f6]' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#334155]/50 hover:text-[#0f172a] dark:hover:text-[#f8fafc]'}`}>
+              <div className={`flex items-center gap-3 rounded-lg py-3 px-4 transition-colors ${isActive ? 'bg-[#3b82f6]/10 text-[#3b82f6] dark:text-[#60a5fa] border-l-2 border-[#3b82f6] dark:border-[#60a5fa]' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#334155]/50 hover:text-[#0f172a] dark:hover:text-[#f8fafc]'}`}>
                 <item.icon size={20} className="shrink-0" />
                 {!isCollapsed && <span className="font-medium whitespace-nowrap">{item.label}</span>}
               </div>

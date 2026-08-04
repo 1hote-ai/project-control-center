@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { projectsApi } from '@/shared/api'
+import { projectsApi } from "../api/project-api";
 import { useProjectStore } from './store'
 
 export function useProjectsQuery() {
